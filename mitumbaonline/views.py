@@ -13,7 +13,7 @@ class ProductList(APIView):
     def get(self,request,format=None):
         all_prod=Product.objects.all()
         serializers=ProductSerializer(all_prod,many=True)
-        return Response(serializers.data)
+        return Response({'products': serializers.data})
 
     def post(self,request,format=None):
         serializers=ProductSerializer(data=request.data)
@@ -26,7 +26,7 @@ class CategoryList(APIView):
     def get(self,request,format=None):
         all_cat=Category.objects.all()
         serializers=CategorySerializer(all_cat,many=True)
-        return Response(serializers.data)
+        return Response({'Categories': serializers.data})
 
     def post(self,request,format=None):
         serializers=CategorySerializer(data=request.data)
