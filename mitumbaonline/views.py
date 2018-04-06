@@ -5,22 +5,17 @@ from .models import Product,Category
 from .serializer import ProductSerializer,CategorySerializer
 from rest_framework import status
 from .permissions import IsAdminOrReadOnly
+from rest_framework import generics
 
 
-class ProductList(APIView):
-    permission_classes = (IsAdminOrReadOnly,)
+def Index(request):
+    return render(request,'index.html')
 
-    def get(self,request,format=None):
-        all_prod=Product.objects.all()
-        serializers=ProductSerializer(all_prod,many=True)
-        return Response({'products': serializers.data})
+   
 
-    def post(self,request,format=None):
-        serializers=ProductSerializer(data=request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(serializers.data,status=status.HTTP_201_CREATED)
-        return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)    
+class ProductList(generics.ListCreateAPIView):
+    queryset=Product.objects.all()
+    serializer_class=ProductSerializer
 
 class CategoryList(APIView):
     def get(self,request,format=None):
